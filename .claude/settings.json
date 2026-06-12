@@ -1,11 +1,6 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(*)",
-      "Read(*)",
-      "Write(/home/user/internal-tools/**)",
-      "Edit(/home/user/internal-tools/**)"
-    ]
+    "allow": ["Bash(*)", "Read(*)", "Write(**)", "Edit(**)"]
   },
   "hooks": {
     "PreToolUse": [
@@ -14,7 +9,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/user/internal-tools/.claude/hooks/scope-guard.sh"
+            "command": "bash .claude/hooks/scope-guard.sh"
           }
         ]
       },
@@ -23,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/user/internal-tools/.claude/hooks/scope-guard.sh"
+            "command": "bash .claude/hooks/scope-guard.sh"
           }
         ]
       },
@@ -32,7 +27,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/user/internal-tools/.claude/hooks/web-safety.sh"
+            "command": "bash .claude/hooks/web-safety.sh"
           }
         ]
       }
@@ -43,7 +38,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/user/internal-tools/.claude/hooks/memory-update.sh"
+            "command": "bash .claude/hooks/memory-update.sh"
           }
         ]
       },
@@ -52,7 +47,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/user/internal-tools/.claude/hooks/plan-checkpoint.sh"
+            "command": "bash .claude/hooks/plan-checkpoint.sh"
           }
         ]
       }

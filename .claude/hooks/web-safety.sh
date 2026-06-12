@@ -3,7 +3,7 @@
 # Logs all web access. Warns on high-risk domains.
 # Claude is instructed in CLAUDE.md to treat fetched content as untrusted data.
 
-PROJECT_ROOT="/home/user/internal-tools"
+PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 LOG_FILE="$PROJECT_ROOT/docs/web-fetch-log.txt"
 
 TOOL_INPUT=$(cat)

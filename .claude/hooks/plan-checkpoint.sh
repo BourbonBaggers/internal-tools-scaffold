@@ -3,7 +3,7 @@
 # Auto-commits docs/plans/active-plan.md after every Edit/Write to it.
 # Ensures plan state is always in git even if a session dies mid-milestone.
 
-PROJECT_ROOT="/home/user/internal-tools"
+PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 PLAN_FILE="docs/plans/active-plan.md"
 
 TOOL_INPUT=$(cat)

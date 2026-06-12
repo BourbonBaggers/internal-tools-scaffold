@@ -3,7 +3,7 @@
 # Detects when a Bash tool call ran a git commit, then triggers
 # the memory update script to refresh docs/memory.md and docs/researcher.md.
 
-PROJECT_ROOT="/home/user/internal-tools"
+PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
 TOOL_INPUT=$(cat)
 COMMAND=$(echo "$TOOL_INPUT" | python3 -c "

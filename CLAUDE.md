@@ -58,6 +58,7 @@ These three files provide full context for any session. Only open source files w
 - Next.js — Vite is sufficient; no SSR needed
 - GraphQL — REST is fine; revisit only if type-sharing pain becomes severe
 - Microservices, queues, service mesh — see boring tech rule below
+- Python — application code is TypeScript; scripts and automation are bash or n8n
 
 ---
 
@@ -250,11 +251,11 @@ apps/web/src/
 
 ### Shared helpers: three tiers
 
-| Location | What belongs there |
-|---|---|
-| `packages/types/src/api/[tool].ts` | Request/response types shared between API and web |
-| `apps/api/src/lib/` | Server utilities used by 2+ tools (DB helpers, notify, etc.) |
-| `apps/web/src/lib/` | Client utilities used by 2+ tools (api wrapper, query client, etc.) |
+| Location                           | What belongs there                                                  |
+| ---------------------------------- | ------------------------------------------------------------------- |
+| `packages/types/src/api/[tool].ts` | Request/response types shared between API and web                   |
+| `apps/api/src/lib/`                | Server utilities used by 2+ tools (DB helpers, notify, etc.)        |
+| `apps/web/src/lib/`                | Client utilities used by 2+ tools (api wrapper, query client, etc.) |
 
 If a helper is used by exactly one tool, keep it inside that tool's folder. Extract to `lib/` only when a second tool needs it.
 

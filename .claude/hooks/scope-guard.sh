@@ -6,7 +6,7 @@
 #   exit 0: allow
 #   exit 2: block (with message on stdout)
 
-PROJECT_ROOT="/home/user/internal-tools"
+PROJECT_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 
 TOOL_INPUT=$(cat)
 TOOL_NAME=$(echo "$TOOL_INPUT" | python3 -c "
