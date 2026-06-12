@@ -22,6 +22,7 @@ Before writing a single line of code:
    - You're about to use a package API you haven't used in this session before
 
    When major version changes are flagged, review the package's CHANGELOG before writing code that uses that package's API.
+
 7. **Announce your plan for the session** before making any changes.
 
 These three files provide full context for any session. Only open source files when a specific change requires reading them.

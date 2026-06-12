@@ -7,21 +7,25 @@ Quick reference for common production problems. Each section: what you see → w
 ## App is down / 502 from Cloudflare
 
 **Check first:**
+
 ```bash
 ssh $PROD_SSH_USER@$PROD_SSH_HOST "docker compose ps"
 ```
 
 If `api` or `web` containers are not `Up`:
+
 ```bash
 ssh $PROD_SSH_USER@$PROD_SSH_HOST "docker compose logs --tail=50 api"
 ```
 
 **Common causes:**
+
 - OOM kill → `docker stats` to check memory; restart with `docker compose up -d`
 - Prisma migration failed on deploy → see "Stuck migration" below
 - Port conflict → check `docker compose logs` for `EADDRINUSE`
 
 **Restart without redeploy:**
+
 ```bash
 ssh $PROD_SSH_USER@$PROD_SSH_HOST "cd $PROD_APP_DIR && docker compose up -d"
 ```
@@ -41,6 +45,7 @@ ssh $PROD_SSH_USER@$PROD_SSH_HOST "
 ```
 
 To return to the main branch after rollback:
+
 ```bash
 ssh $PROD_SSH_USER@$PROD_SSH_HOST "cd $PROD_APP_DIR && git checkout main && git pull"
 ```
@@ -52,11 +57,13 @@ ssh $PROD_SSH_USER@$PROD_SSH_HOST "cd $PROD_APP_DIR && git checkout main && git 
 Backups are created by the `db-backup` Docker service and stored in `$PROD_APP_DIR/backups/`.
 
 **List available backups:**
+
 ```bash
 ssh $PROD_SSH_USER@$PROD_SSH_HOST "ls -lh $PROD_APP_DIR/backups/"
 ```
 
 **Restore:**
+
 ```bash
 ssh $PROD_SSH_USER@$PROD_SSH_HOST "
   cd $PROD_APP_DIR
@@ -97,11 +104,13 @@ Never commit `.env` to git. If a secret was accidentally committed, rotate it im
 **Symptom:** Deploy fails with `P3009 migrate found failed migrations` or the API refuses to start.
 
 **Check migration status:**
+
 ```bash
 ssh $PROD_SSH_USER@$PROD_SSH_HOST "cd $PROD_APP_DIR && docker compose exec api npx prisma migrate status"
 ```
 
 **Resolve a failed migration:**
+
 ```bash
 # Mark the failed migration as rolled back so Prisma will re-apply it
 ssh $PROD_SSH_USER@$PROD_SSH_HOST "
@@ -118,16 +127,19 @@ If the migration state is completely corrupted, restore from backup (see above) 
 ## Disk space
 
 **Check:**
+
 ```bash
 ssh $PROD_SSH_USER@$PROD_SSH_HOST "df -h && docker system df"
 ```
 
 **Reclaim Docker space (safe — only removes unused images/containers):**
+
 ```bash
 ssh $PROD_SSH_USER@$PROD_SSH_HOST "docker system prune -f"
 ```
 
 **Reclaim old backups (keep the last 7):**
+
 ```bash
 ssh $PROD_SSH_USER@$PROD_SSH_HOST "
   ls -t $PROD_APP_DIR/backups/*.sql.gz | tail -n +8 | xargs rm -f
