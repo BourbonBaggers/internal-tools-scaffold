@@ -40,5 +40,8 @@ CLAUDE.md, ARCHITECTURE.md, memory.md, researcher.md.
 
 ## Next Steps
 
-When building the first real tool, replace this file with:
-`docs/plans/YYYY-MM-DD-tool-name.md`
+When building the first real tool:
+1. Run `bash scripts/archive-plan.sh` to archive this file
+2. Write `docs/plans/YYYY-MM-DD-tool-name.md` with milestones
+3. Copy it to `docs/plans/active-plan.md`
+4. Follow the 9-step checklist in CLAUDE.md §12

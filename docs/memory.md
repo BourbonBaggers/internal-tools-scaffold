@@ -5,13 +5,14 @@
 > Then read `docs/researcher.md` and `docs/plans/active-plan.md`.
 
 ## Last Updated
-2026-06-12T17:39:23Z
+2026-06-12T17:39:30Z
 
 ## Current Branch
 `main`
 
 ## Recent Commits (last 5)
 ```
+cd59a1f plan: checkpoint
 c964090 scaffold: initial monorepo structure
 7a1ddd8 Initial commit
 ```
@@ -22,26 +23,9 @@ Current milestone: (no milestones found)
 
 ## Last Modified Files (previous commit)
 ```
-.claude/hooks/memory-update.sh
-.claude/hooks/plan-checkpoint.sh
-.claude/hooks/scope-guard.sh
-.claude/hooks/web-safety.sh
-.claude/settings.json
-.env.example
-.gitignore
-.gitleaks.toml
-.husky/pre-commit
-.nvmrc
-.prettierrc
-ARCHITECTURE.md
-CLAUDE.md
-apps/api/.env.example
-apps/api/package.json
-apps/api/src/app.ts
-apps/api/src/env.ts
-apps/api/src/index.ts
-apps/api/src/lib/notify.ts
-apps/api/src/lib/prisma.ts
+docs/memory.md
+docs/plans/active-plan.md
+docs/researcher.md
 ```
 
 ## Quick Commands
