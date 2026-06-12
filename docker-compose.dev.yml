@@ -1,0 +1,28 @@
+# Dev compose: only runs postgres.
+# The api and web processes run on the host via `npm run dev`.
+# This avoids the macOS bind-mount HMR performance degradation.
+#
+# Usage:
+#   docker compose -f docker-compose.dev.yml up -d
+#   npm run dev   (in repo root — starts both api and web)
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: devpassword
+      POSTGRES_DB: internal_tools_dev
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  postgres_dev_data:

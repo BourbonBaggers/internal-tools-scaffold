@@ -1,0 +1,89 @@
+#!/bin/sh
+# Pre-commit quality gate — runs on every commit from any source.
+# Requires: gitleaks (brew install gitleaks on Mac Mini)
+set -eu
+
+# ─── Block staged .env files ──────────────────────────────────────────────────
+STAGED_ENV=$(git diff --staged --name-only | grep -E '(^|/)\.env$|(^|/)\.env\.' | grep -v '\.example$' || true)
+if [ -n "$STAGED_ENV" ]; then
+  echo "ERROR: Attempted to commit .env file(s):"
+  echo "$STAGED_ENV"
+  echo "Remove them with: git restore --staged <file>"
+  exit 1
+fi
+
+# ─── Block raw Prisma queries with string interpolation (SQL injection risk) ──
+STAGED_TS=$(git diff --staged --name-only | grep '\.ts$' || true)
+if [ -n "$STAGED_TS" ]; then
+  RAW_QUERY_VIOLATIONS=$(git diff --staged -U0 | grep '^+' | grep -E '\.(queryRaw|executeRaw)\(' | grep -v 'sql`' || true)
+  if [ -n "$RAW_QUERY_VIOLATIONS" ]; then
+    echo "ERROR: Raw Prisma query without tagged sql template detected (SQL injection risk)."
+    echo "Use: prisma.\$queryRaw\`SELECT ...\` — not string interpolation"
+    echo "$RAW_QUERY_VIOLATIONS"
+    exit 1
+  fi
+fi
+
+# ─── .env.example drift check ────────────────────────────────────────────────
+if git diff --staged --name-only | grep -q "apps/api/src/env.ts"; then
+  NEW_VARS=$(git diff --staged -U0 apps/api/src/env.ts | grep '^+' | grep -oE '[A-Z][A-Z0-9_]{2,}' | sort -u || true)
+  for var in $NEW_VARS; do
+    if ! grep -q "^$var=" .env.example 2>/dev/null && ! grep -q "^# $var" .env.example 2>/dev/null \
+       && ! grep -q "^$var=" apps/api/.env.example 2>/dev/null; then
+      echo "WARNING: $var may need to be documented in .env.example or apps/api/.env.example"
+    fi
+  done
+fi
+
+# ─── Enforce tool folder organization ───────────────────────────────────────
+# API: tool routes must live in routes/v1/[tool-name]/ — not directly in v1/
+LOOSE_ROUTES=$(git diff --staged --name-only | grep -E '^apps/api/src/routes/v1/[^/]+\.(ts|js)$' | grep -v 'apps/api/src/routes/v1/index\.ts' || true)
+if [ -n "$LOOSE_ROUTES" ]; then
+  echo "ERROR: Route files must be in a tool subfolder, not directly in routes/v1/."
+  echo "  Move these to apps/api/src/routes/v1/[tool-name]/index.ts:"
+  echo "$LOOSE_ROUTES"
+  exit 1
+fi
+
+# Web: tool pages must live in pages/[tool-name]/ — not directly in pages/
+LOOSE_PAGES=$(git diff --staged --name-only | grep -E '^apps/web/src/pages/[^/]+\.tsx$' | grep -vE '(Dashboard|NotFound)Page\.tsx$' || true)
+if [ -n "$LOOSE_PAGES" ]; then
+  echo "ERROR: Page files must be in a tool subfolder, not directly in pages/."
+  echo "  Move these to apps/web/src/pages/[tool-name]/[ToolName]Page.tsx:"
+  echo "$LOOSE_PAGES"
+  exit 1
+fi
+
+# If a new tool route folder is staged, routes/v1/index.ts must also be modified
+NEW_TOOL_ROUTES=$(git diff --staged --name-only | grep -E '^apps/api/src/routes/v1/[^/]+/index\.ts$' || true)
+if [ -n "$NEW_TOOL_ROUTES" ]; then
+  if ! git diff --staged --name-only | grep -q 'apps/api/src/routes/v1/index\.ts'; then
+    echo "ERROR: New tool route added but apps/api/src/routes/v1/index.ts was not updated."
+    echo "  Register the new route in the manifest file."
+    exit 1
+  fi
+fi
+
+# If a new tool page folder is staged, App.tsx must also be modified
+NEW_TOOL_PAGES=$(git diff --staged --name-only | grep -E '^apps/web/src/pages/[^/]+/[^/]+Page\.tsx$' || true)
+if [ -n "$NEW_TOOL_PAGES" ]; then
+  if ! git diff --staged --name-only | grep -q 'apps/web/src/App\.tsx'; then
+    echo "WARNING: New tool page added but apps/web/src/App.tsx was not updated."
+    echo "  Add a <Route> for the new page."
+    # Warning only — does not block (App.tsx may be updated in a follow-up commit)
+  fi
+fi
+
+# ─── Lint and format staged files ────────────────────────────────────────────
+npx lint-staged
+
+# ─── Secret scanning with gitleaks ───────────────────────────────────────────
+if command -v gitleaks >/dev/null 2>&1; then
+  gitleaks protect --staged --redact --config=.gitleaks.toml
+else
+  echo "WARNING: gitleaks not installed — secret scanning skipped."
+  echo "Install with: brew install gitleaks"
+fi
+
+# ─── Run tests ───────────────────────────────────────────────────────────────
+npm test

@@ -1,0 +1,14 @@
+title = "BourbonBaggers gitleaks config"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Allowlist for known safe files"
+paths = [
+  '''.env\.example$''',
+  '''ARCHITECTURE\.md$''',
+  '''docs/memory\.md$''',
+  '''docs/researcher\.md$''',
+  '''\.gitleaks\.toml$''',
+]

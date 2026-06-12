@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+*.js.map
+
+# Turborepo cache
+.turbo/
+
+# Environment files — NEVER commit real env files
+# .env.example files ARE safe to commit (placeholders only)
+.env
+.env.local
+.env.*.local
+apps/**/.env
+apps/**/.env.local
+
+# Prisma generated
+prisma/generated/
+
+# OS / Editor
+.DS_Store
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+docs/web-fetch-log.txt
+
+# Docker overrides (local machine specific, not committed)
+docker-compose.override.yml
+
+# Test coverage
+coverage/
+
+# TypeScript incremental build info
+*.tsbuildinfo
+
+# Backup files
+*.bak
+*.sql.gz

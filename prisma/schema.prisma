@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Prisma v7: connection URL is no longer in schema.prisma.
+// It is configured in prisma.config.ts (for migrations) and passed
+// via PrismaClient constructor (for runtime). See apps/api/src/lib/prisma.ts.
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Scaffold placeholder ────────────────────────────────────────────────────
+// Replace or extend as tools are built.
+// Conventions:
+//   - IDs: String @id @default(cuid())
+//   - All models include createdAt + updatedAt
+//   - Soft deletes via deletedAt DateTime? where needed
+
+model Example {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
