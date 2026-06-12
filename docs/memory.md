@@ -5,18 +5,15 @@
 > Then read `docs/researcher.md` and `docs/plans/active-plan.md`.
 
 ## Last Updated
-2026-06-09T13:09:41Z
+2026-06-12T17:39:23Z
 
 ## Current Branch
-`claude/bourbon-baggers-scaffold-xrN00`
+`main`
 
 ## Recent Commits (last 5)
 ```
-96450e7 docs: refresh memory and researcher
-e07c03c docs: add official ntfy iOS app store link
-493fc1e docs: refresh memory and researcher
-cb68e8a fix: set correct git author in plan-checkpoint hook
-2065ae1 docs: refresh memory and researcher
+c964090 scaffold: initial monorepo structure
+7a1ddd8 Initial commit
 ```
 
 ## Active Plan Milestone Reference
@@ -25,8 +22,26 @@ Current milestone: (no milestones found)
 
 ## Last Modified Files (previous commit)
 ```
-docs/memory.md
-docs/researcher.md
+.claude/hooks/memory-update.sh
+.claude/hooks/plan-checkpoint.sh
+.claude/hooks/scope-guard.sh
+.claude/hooks/web-safety.sh
+.claude/settings.json
+.env.example
+.gitignore
+.gitleaks.toml
+.husky/pre-commit
+.nvmrc
+.prettierrc
+ARCHITECTURE.md
+CLAUDE.md
+apps/api/.env.example
+apps/api/package.json
+apps/api/src/app.ts
+apps/api/src/env.ts
+apps/api/src/index.ts
+apps/api/src/lib/notify.ts
+apps/api/src/lib/prisma.ts
 ```
 
 ## Quick Commands

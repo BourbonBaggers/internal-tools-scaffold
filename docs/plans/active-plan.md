@@ -6,13 +6,13 @@ Establishing the baseline monorepo scaffold and standards for all future interna
 
 ## Status
 
-**WIP — not yet a usable foundation.** This branch contains the initial scaffolding
-commit but has not been end-to-end validated on a real machine. Do not build apps on
-this yet.
+**Scaffold complete and validated.** `npm install` runs clean on Mac Mini, both tests
+pass without a database, and Husky hooks fire on commit. `.claude/settings.json` and
+all four `.claude/hooks/` scripts now use portable paths (dynamic git root, not
+hardcoded to a specific machine).
 
-**Milestone 1 (next)** is the version worth cloning: the scaffold runs cleanly from
-a fresh clone on the Mac Mini — `npm install`, `docker compose up`, `npm run dev` all
-work, `/health` responds, the frontend loads, and Husky hooks fire on commit.
+This repo is published as a public GitHub template at `BourbonBaggers/internal-tools-scaffold`.
+The working repo for actual tool development is `BourbonBaggers/internal-tools`.
 
 ---
 
