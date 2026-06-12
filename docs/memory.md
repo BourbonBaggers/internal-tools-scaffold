@@ -5,18 +5,18 @@
 > Then read `docs/researcher.md` and `docs/plans/active-plan.md`.
 
 ## Last Updated
-2026-06-12T18:59:22Z
+2026-06-12T19:03:49Z
 
 ## Current Branch
 `main`
 
 ## Recent Commits (last 5)
 ```
+ef6b392 docs: refresh memory and researcher
 9072a6d docs: refresh memory and researcher
 9e9ad46 docs: refresh memory and researcher
 304facc docs: refresh memory and researcher
 1c8a491 chore: make scaffold portable for any machine
-b380507 plan: checkpoint
 ```
 
 ## Active Plan Milestone Reference
@@ -25,12 +25,9 @@ Current milestone: (no milestones found)
 
 ## Last Modified Files (previous commit)
 ```
-.claude/commands/deploy.md
-.claude/commands/new-tool.md
-CLAUDE.md
 docs/memory.md
 docs/researcher.md
-docs/runbook.md
+scripts/docker-entrypoint-api.sh
 ```
 
 ## Quick Commands

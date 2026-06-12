@@ -27,6 +27,8 @@ COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/apps/api/dist ./apps/api/dist
 COPY --from=builder /app/apps/api/package.json ./apps/api/
 COPY --from=builder /app/prisma ./prisma
+# prisma.config.ts is required by prisma migrate deploy in v7 to resolve DATABASE_URL
+COPY prisma.config.ts ./
 COPY scripts/docker-entrypoint-api.sh ./
 
 RUN chmod +x docker-entrypoint-api.sh
