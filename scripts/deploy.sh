@@ -50,6 +50,12 @@ npm test
 echo "==> [2/4] Running security audit..."
 bash scripts/security-check.sh
 
+read -rp "Deploy to ${PROD_SSH_HOST}? [y/N] " CONFIRM
+if [[ ! "${CONFIRM:-N}" =~ ^[Yy]$ ]]; then
+  echo "Deploy cancelled."
+  exit 0
+fi
+
 echo "==> [3/4] Deploying to $PROD_SSH_HOST..."
 # shellcheck disable=SC2029
 ssh "${PROD_SSH_USER}@${PROD_SSH_HOST}" "

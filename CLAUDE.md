@@ -20,8 +20,8 @@ Before writing a single line of code:
 6. **Check for major version changes** — Claude's training cutoff is August 2025. Run `bash scripts/check-versions.sh` if any of the following are true:
    - The session involves upgrading dependencies
    - You're about to use a package API you haven't used in this session before
-   - It has been more than a week since the last version check
-     When major version changes are flagged, review the package's CHANGELOG before writing code that uses that package's API.
+
+   When major version changes are flagged, review the package's CHANGELOG before writing code that uses that package's API.
 7. **Announce your plan for the session** before making any changes.
 
 These three files provide full context for any session. Only open source files when a specific change requires reading them.
@@ -274,3 +274,37 @@ If a helper is used by exactly one tool, keep it inside that tool's folder. Extr
 9. Write tests in `tests/api/v1/tool-name.test.ts` (happy path + invalid input — mandatory)
 
 No route folder without a corresponding test file.
+
+---
+
+## 13. Known Gotchas
+
+Things that look wrong but are intentional, or that will burn you if you don't know about them.
+
+### `--no-verify` in Husky hooks
+
+Some scripts (e.g., `scripts/archive-plan.sh`) use `git commit --no-verify` internally. This is intentional — those commits are housekeeping (archiving docs) and should not run the full test suite. Do not remove these flags.
+
+### scope-guard.sh blocks edits outside the git root
+
+The `.claude/hooks/scope-guard.sh` hook rejects any `Edit` or `Write` call whose path falls outside the project root (as resolved by `git rev-parse --show-toplevel`). If you get unexpected "blocked" messages, make sure you're working within the repo directory and that `git rev-parse --show-toplevel` returns the correct path.
+
+### Node version drift
+
+The project requires Node.js 22 LTS. If tests fail with cryptic errors about ESM or native modules, run `node --version` first. `nvm use 22` if you're on a different version.
+
+### plan-checkpoint fires on every active-plan.md write
+
+`.claude/hooks/plan-checkpoint.sh` runs after every `Edit` or `Write` call and checks whether `docs/plans/active-plan.md` has a milestone marker. This is intentional — it's a lightweight nudge to keep the plan up to date. If you edit `active-plan.md` many times in a row you'll see the hook output repeatedly. This is normal.
+
+### python3 is used for string manipulation in bash scripts
+
+`scripts/new-tool.sh` uses `python3` inline for PascalCase/camelCase conversion. Python is available on macOS by default and is acceptable here as a string utility — it is not application code. This is the only permitted use of Python in this repo.
+
+### Tailwind v4 has no config file
+
+Tailwind CSS v4 is CSS-first — there is no `tailwind.config.ts`. Theme customization goes in the CSS file via `@theme`. If you are used to v3, do not create a config file — it will be ignored or cause conflicts.
+
+### shadcn/ui components are local copies
+
+`npx shadcn@latest add <component>` copies the component source into `apps/web/src/components/ui/`. You own that code. Upgrading a component means re-running the add command and reconciling the diff — shadcn does not self-update.

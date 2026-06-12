@@ -5,18 +5,18 @@
 > Then read `docs/researcher.md` and `docs/plans/active-plan.md`.
 
 ## Last Updated
-2026-06-12T17:40:03Z
+2026-06-12T18:27:31Z
 
 ## Current Branch
 `main`
 
 ## Recent Commits (last 5)
 ```
+304facc docs: refresh memory and researcher
 1c8a491 chore: make scaffold portable for any machine
 b380507 plan: checkpoint
 cd59a1f plan: checkpoint
 c964090 scaffold: initial monorepo structure
-7a1ddd8 Initial commit
 ```
 
 ## Active Plan Milestone Reference
@@ -25,13 +25,8 @@ Current milestone: (no milestones found)
 
 ## Last Modified Files (previous commit)
 ```
-.claude/hooks/memory-update.sh
-.claude/hooks/plan-checkpoint.sh
-.claude/hooks/scope-guard.sh
-.claude/hooks/web-safety.sh
-.claude/settings.json
-CLAUDE.md
-package-lock.json
+docs/memory.md
+docs/researcher.md
 ```
 
 ## Quick Commands

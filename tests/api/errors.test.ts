@@ -1,17 +1,12 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import type { FastifyInstance } from "fastify";
-
-process.env["DATABASE_URL"] = "postgresql://test:test@localhost:5432/test";
-process.env["NODE_ENV"] = "test";
-
-const { buildApp } = await import("../../apps/api/src/app.js");
+import { buildTestApp } from "../helpers/app.js";
 
 describe("Error handling", () => {
   let app: FastifyInstance;
 
   beforeAll(async () => {
-    app = buildApp();
-    await app.ready();
+    app = await buildTestApp();
   });
 
   afterAll(async () => {
